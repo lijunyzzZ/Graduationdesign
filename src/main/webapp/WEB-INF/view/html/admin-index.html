@@ -14,16 +14,16 @@
   <meta name="apple-mobile-web-app-title" content="Amaze UI" />
   <link rel="stylesheet" href="assets/css/amazeui.min.css"/>
   <link rel="stylesheet" href="assets/css/admin.css">
+  <script src="assets/js/jquery-3.3.1.js"></script>
+  <script src="assets/js/jquery-3.3.1.min.js"></script>
+  <script type="text/javascript" src = "assets/js/jquery.form.js"></script>
+<!--   <script src="assets/js/action.js">  -->
 </head>
 <body>
-<!--[if lte IE 9]>
-<p class="browsehappy">你正在使用<strong>过时</strong>的浏览器，Amaze UI 暂不支持。 请 <a href="http://browsehappy.com/" target="_blank">升级浏览器</a>
-  以获得更好的体验！</p>
-<![endif]-->
 
 <header class="am-topbar am-topbar-inverse admin-header">
   <div class="am-topbar-brand">
-    <strong>Amaze UI</strong> <small>后台管理模板</small>
+    <strong>lijuny</strong> <small>GBK数据处理分析工具</small>
   </div>
 
   <button class="am-topbar-btn am-topbar-toggle am-btn am-btn-sm am-btn-success am-show-sm-only" data-am-collapse="{target: '#topbar-collapse'}"><span class="am-sr-only">导航切换</span> <span class="am-icon-bars"></span></button>
@@ -197,6 +197,11 @@
                 <li>
                   <strong><span class="am-icon-check"></span> 其实都没有.Mp3</strong>
                   <p>3.3 of 5MB - 5 mins - 3MB/Sec</p>
+                  <form id="uploadForm" enctype="multipart/form-data"  enctype="multipart/form-data">  
+    				文件:<input name="uploadfile" type="file" id="btn_file" name="file" >
+    
+				  </form> 
+			      <button id="upload" type="button" id="upload" onclick="submitfile()">上传文件</button>
                 </li>
               </ul>
             </div>
@@ -340,16 +345,51 @@
 
 <a href="#" class="am-icon-btn am-icon-th-list am-show-sm-only admin-menu" data-am-offcanvas="{target: '#admin-offcanvas'}"></a>
 
-<!--[if lt IE 9]>
-<script src="http://libs.baidu.com/jquery/1.11.1/jquery.min.js"></script>
-<script src="http://cdn.staticfile.org/modernizr/2.8.3/modernizr.js"></script>
-<script src="assets/js/amazeui.ie8polyfill.min.js"></script>
-<![endif]-->
 
-<!--[if (gte IE 9)|!(IE)]><!-->
-<script src="assets/js/jquery.min.js"></script>
-<!--<![endif]-->
 <script src="assets/js/amazeui.min.js"></script>
 <script src="assets/js/app.js"></script>
+<script>
+
+	/* $(function() {
+		$("#upload").click(function() {
+			var formData = new FormData($('#uploadForm')[0]);
+			$.ajax({
+				type : 'post',
+				url : "http://localhost:8080/datadel/person",
+				data : formData,
+				cache : false,
+				processData : false,
+				contentType : false,
+				success : function(data) {
+					alert(123);
+				},
+				error : function() {
+					alert("错误");
+				}
+			})
+		});
+	}); */
+	function submitfile() {
+		var option = {
+				url : "http://localhost:8080/datadel/person",
+				type : 'POST',
+				clearForm:true,
+				contentType:false,
+				processData:false,
+				success : function(e) {
+					alert(111);
+				}
+			};
+		$("#uploadForm").ajaxSubmit(option); 
+		return false;
+	}
+	function selectChange() {
+		var uploadfileinput = $("input[name='uploadfile']");
+		if (uploadfileinput.val() != "") {
+			$("#select").css("display", "none");
+			$("#uploadbutton").css("display", "block");
+		}
+	}
+</script>
 </body>
 </html>
