@@ -3,6 +3,7 @@ package com.springdemo.controller;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -18,12 +20,16 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.springdemo.dao.DataBase_Dao;
+import com.springdemo.dao.DataFormImpl;
+import com.springdemo.dao.FileFormImpl;
 import com.springdemo.domain.dataInstance;
 import com.springdemo.impl.DatadealImpl;
 
 @Controller
 public class DemoController {
-
+	static final String FILE_ROOT = "C://Users/lijunyi/git/datadel/file";
+	
 	/**
 	 * 设置初始页面
 	 * 
@@ -32,6 +38,14 @@ public class DemoController {
 	@RequestMapping("/index")
 	public String index() {
 		return "admin-index";
+	}
+	@RequestMapping("/form")
+	public String form() {
+		return "admin-form";
+	}
+	@RequestMapping("/table")
+	public String table() {
+		return "admin-table";
 	}
 	/**
 	 * 上传
@@ -58,7 +72,7 @@ public class DemoController {
 			// 获得文件后缀名称
 			String filename = uploadfile.getOriginalFilename();
 			String uploadfileType = filename.substring(filename.indexOf(".")+1);
-			path = "/file/" + uuid + "." + uploadfileType;
+			path = uploadfileType;
 			uploadfile.transferTo(new File(pathRoot + path));
 		}
 		return "";
@@ -71,14 +85,58 @@ public class DemoController {
 			return;
 		}
 		List<String> res = new ArrayList<>();
-		DatadealImpl de = new DatadealImpl();
+		DatadealImpl di = new DatadealImpl();
+		String name = filename.substring(filename.lastIndexOf("/")+1, filename.length());
+		res = di.getInstanceList(filename);
 		
-		res = de.getInstanceList(filename);
-		List<dataInstance> datalist = de.String2Instance(res);
-//		de.savedataInstance(res);
+		List<dataInstance> datalist = di.String2Instance(res,name);
+		di.savedataInstance(datalist);
 	}
+	
+	
+	/**
+	 * 获取数据列表
+	 * @param filename
+	 * @param index
+	 * @return
+	 */
+	@RequestMapping(value="/getDataForm")
+	@ResponseBody
+	public List<String> getDataForm(String filename, int index){
+		DataFormImpl ff = new DataFormImpl();
+		List<String> res = ff.getDataFormByIndex(filename,index);
+		return null;
+	}
+	
+	/**
+	 * 
+	 * @param index 第几页
+	 * @return
+	 */
+	@RequestMapping(value="/getFileForm")
+	@ResponseBody
+	public List<String> getFileForm(int index) {
+		File file = new File(FILE_ROOT);
+		String[] fileName = file.list();
+		List<String> list = Arrays.asList(fileName);
+		FileFormImpl ff = new FileFormImpl();
+		List<String> res = ff.getFormByIndex(list,index);
+		return res;
+	}
+	/**
+	 * 测试文件读取第一次存储到数据库
+	 */
 	@Test
-	public void test(){
+	public void testdealData(){
 		dealdata("D:/rna.gbk");
 	}
+	@Test
+	public void testFileForm(){
+		List<String> res= getFileForm(0);
+		for(int i=0;i<res.size();i++){
+			System.out.println("file"+ res.get(i));
+		}
+	}
+	
+	
 }

@@ -1,5 +1,7 @@
 package com.springdemo.domain;
 
+import java.util.UUID;
+
 import com.springdemo.commons.stringUtil;
 
 /**
@@ -8,7 +10,8 @@ import com.springdemo.commons.stringUtil;
  *
  */
 public class dataInstance {
-
+	private String filename;
+	private String uuid;
 	private String LOCUS;
 	private String DEFINITION;
 	private String ACCESSION;
@@ -23,6 +26,7 @@ public class dataInstance {
 	private String ORIGIN;
 	final static String[] INTERCEPTION_ARR = { "LOCUS", "DEFINITION", "ACCESSION", "VERSION", "DBLINK", "KEYWORDS",
 			"SOURCE", "ORGANISM", "COMMENT", "PRIMARY", "FEATURES", "ORIGIN" };
+
 	public String getLOCUS() {
 		return LOCUS;
 	}
@@ -119,7 +123,14 @@ public class dataInstance {
 		ORIGIN = oRIGIN;
 	}
 
-	public dataInstance(String str) {
+	public String getUuid() {
+		return this.uuid;
+	}
+	
+	public String getFilename(){
+		return this.filename;
+	}
+	public dataInstance(String str, String filename) {
 		this.LOCUS = str.indexOf("LOCUS") != -1
 				? str.substring(str.indexOf("LOCUS"), str.indexOf(InterceptionArr(str, "DEFINITION"))) : "";
 		this.DEFINITION = str.indexOf("DEFINITION") != -1
@@ -143,10 +154,10 @@ public class dataInstance {
 		this.FEATURES = str.indexOf("FEATURES") != -1
 				? str.substring(str.indexOf("FEATURES"), str.indexOf(InterceptionArr(str, "ORIGIN"))) : "";
 		this.ORIGIN = str.indexOf("ORIGIN") != -1 ? dealOrign(str.substring(str.indexOf("ORIGIN"))) : "";
-		
+
 		stringUtil stringUtil = new stringUtil();
 		this.LOCUS = stringUtil.translation(this.LOCUS);
-		this.DEFINITION =stringUtil.translation(this.DEFINITION);
+		this.DEFINITION = stringUtil.translation(this.DEFINITION);
 		this.ACCESSION = stringUtil.translation(this.ACCESSION);
 		this.VERSION = stringUtil.translation(this.VERSION);
 		this.KEYWORDS = stringUtil.translation(this.KEYWORDS);
@@ -157,6 +168,8 @@ public class dataInstance {
 		this.FEATURES = stringUtil.translation(this.FEATURES);
 		this.DBLINK = stringUtil.translation(this.DBLINK);
 		this.ORIGIN = stringUtil.translation(this.ORIGIN);
+		this.uuid = UUID.randomUUID().toString();
+		this.filename = filename;
 	}
 
 	public String InterceptionArr(String str, String index) {
@@ -171,15 +184,15 @@ public class dataInstance {
 				break;
 			}
 		}
-		for (int i = a; i <INTERCEPTION_ARR.length; i++) {
+		for (int i = a; i < INTERCEPTION_ARR.length; i++) {
 			if (str.indexOf(INTERCEPTION_ARR[i]) != -1) {
 				return INTERCEPTION_ARR[i];
 			}
 		}
-		if(str.equals("ORIGIN")){
+		if (str.equals("ORIGIN")) {
 			System.out.println("没有R");
 		}
-			
+
 		return "";
 
 	}
@@ -190,7 +203,5 @@ public class dataInstance {
 		res = res.replaceAll("ORIGIN", "");
 		return res;
 	}
-
-
 
 }

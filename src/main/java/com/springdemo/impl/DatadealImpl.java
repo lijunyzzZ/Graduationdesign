@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.springdemo.dao.DataBase_Dao;
 import com.springdemo.dao.Datadeal;
 import com.springdemo.domain.*;
@@ -16,7 +18,7 @@ import com.springdemo.domain.*;
  *
  */
 public class DatadealImpl implements Datadeal{
-
+	
 	@Override
 	public List<String> getInstanceList(String filename) {
 		if(filename == null){
@@ -68,10 +70,9 @@ public class DatadealImpl implements Datadeal{
 	}
 
 	@Override
-	public void savedataInstance(List<String> res){
-		List<dataInstance> datalist = String2Instance(res);
-		DataBase_Dao a = new DataBase_Dao();
-		a.saveDaos1(datalist);
+	public void savedataInstance(List<dataInstance> res){
+		DataBase_Dao dao = new DataBase_Dao();
+		dao.saveDaos1(res);
 	}
 
 	@Override
@@ -117,11 +118,11 @@ public class DatadealImpl implements Datadeal{
 			s.add(str[i]);
 		}
 	}
-	public List<dataInstance> String2Instance(List<String> res) {
+	public List<dataInstance> String2Instance(List<String> res,String filename) {
 
 		List<dataInstance> datalist = new ArrayList<>();
 		for (int i = 0; i < res.size(); i++) {
-			dataInstance dataInstance = new dataInstance(res.get(i));
+			dataInstance dataInstance = new dataInstance(res.get(i),filename);
 			datalist.add(dataInstance);
 		}
 		return datalist;

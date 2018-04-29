@@ -1,6 +1,7 @@
 package com.springdemo.dao;
 
 import java.util.List;
+import java.util.Map;
 
 public interface SingleDatadeal {
 	public void dealData();
@@ -24,5 +25,10 @@ public interface SingleDatadeal {
 	public void deal1(String[] str);
 
 	public List<String> getDataRes(String[] s);
-
+	
+	public Map<String,String> dealSingledata(String data);
+	
+	public List<String> splitContent(String origin);
+	
+	public List<Map<String, String>> dealSingledatas(List<String> data);
 }

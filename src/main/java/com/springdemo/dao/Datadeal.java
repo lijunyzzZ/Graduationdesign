@@ -31,7 +31,7 @@ public interface Datadeal {
 	 * 保存处理前的数据到数据库
 	 * @param res
 	 */
-	public void savedataInstance(List<String> res);
+	public void savedataInstance(List<dataInstance> res);
 	/**
 	 * 保存处理后的数据到数据库
 	 * @param res
@@ -45,7 +45,10 @@ public interface Datadeal {
 	 * @return
 	 */
 	public IndirectData GetInstanceByBuf(byte[] buf, byte[] surplus);
+	
 	public byte[] getMergeByte(byte[] buf, byte[] surplus);
+	
 	public void list2String(List<String> s, String[] str, int len);
-	public List<dataInstance> String2Instance(List<String> res);
+	
+	public List<dataInstance> String2Instance(List<String> res,String filename);
 }

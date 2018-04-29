@@ -5,11 +5,14 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Test;
 
 import com.springdemo.domain.*;
+import com.mysql.jdbc.StringUtils;
 import com.springdemo.commons.stringUtil;
 import com.springdemo.dao.DataBase_Dao;
 import com.springdemo.dao.SingleDatadeal;
@@ -174,7 +177,7 @@ public class SingleDatadealImpl implements SingleDatadeal {
 		fileInputStream.close();
 		String a = s.toString();
 		stringUtil st = new stringUtil();
-		dataInstance di = new dataInstance("");
+		dataInstance di = new dataInstance("","");
 		a = di.dealOrign(a);
 		a = st.translation(a);
 		System.out.println(a.length());
@@ -188,6 +191,38 @@ public class SingleDatadealImpl implements SingleDatadeal {
 			System.out.println();
 		}
 
+	}
+
+	@Override
+	public Map<String, String> dealSingledata(String data) {
+		String cl = new String(data);
+		return null;
+	}
+
+	@Override
+	public List<String> splitContent(String origin) {
+		System.out.println("拆分开始");
+		dataInstance di = new dataInstance("", "");
+		origin = di.dealOrign(origin);
+		stringUtil st = new stringUtil();
+		origin = st.translation(origin);
+		System.out.println(origin.length());
+		StringBuffer sb = new StringBuffer(64);
+		deal(origin, sb);
+		String[] b = StringSplitArr(origin, 3);
+		List<String> res = getDataRes(b);
+		System.out.println("拆分结束");
+		return res;
+	}
+
+	@Override
+	public List<Map<String, String>> dealSingledatas(List<String> data) {
+		List<Map<String, String>> res = new ArrayList<>();
+		for (int i = 0; i < data.size(); i++) {
+			Map<String, String> r = dealSingledata(data.get(i));
+			res.add(r);
+		}
+		return res;
 	}
 
 }
