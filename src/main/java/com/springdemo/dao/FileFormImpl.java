@@ -16,7 +16,7 @@ public class FileFormImpl implements Form {
 			return list;
 		}
 		List<String> res = new ArrayList<>();
-		for(int i=index*10;i<index*11;i++){
+		for(int i=index*10;i<index*10+10;i++){
 			res.add(list.get(i));
 		}
 		return res;

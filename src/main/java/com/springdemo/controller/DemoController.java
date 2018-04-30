@@ -93,50 +93,10 @@ public class DemoController {
 		di.savedataInstance(datalist);
 	}
 	
-	
-	/**
-	 * 获取数据列表
-	 * @param filename
-	 * @param index
-	 * @return
-	 */
-	@RequestMapping(value="/getDataForm")
-	@ResponseBody
-	public List<String> getDataForm(String filename, int index){
-		DataFormImpl ff = new DataFormImpl();
-		List<String> res = ff.getDataFormByIndex(filename,index);
-		return null;
-	}
-	
-	/**
-	 * 
-	 * @param index 第几页
-	 * @return
-	 */
-	@RequestMapping(value="/getFileForm")
-	@ResponseBody
-	public List<String> getFileForm(int index) {
-		File file = new File(FILE_ROOT);
-		String[] fileName = file.list();
-		List<String> list = Arrays.asList(fileName);
-		FileFormImpl ff = new FileFormImpl();
-		List<String> res = ff.getFormByIndex(list,index);
-		return res;
-	}
-	/**
-	 * 测试文件读取第一次存储到数据库
-	 */
-	@Test
-	public void testdealData(){
-		dealdata("D:/rna.gbk");
-	}
-	@Test
-	public void testFileForm(){
-		List<String> res= getFileForm(0);
-		for(int i=0;i<res.size();i++){
-			System.out.println("file"+ res.get(i));
-		}
-	}
+//	@Test
+//	public void testdealData(){
+//		dealdata("D:/rna.gbk");
+//	}
 	
 	
 }

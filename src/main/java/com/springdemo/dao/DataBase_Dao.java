@@ -134,15 +134,16 @@ public class DataBase_Dao {
 	 * @return
 	 */
 	public List<String> getDataFormByIndex(String f, int i) {
-		int start = PAGE_NUM * (i - 1);
-		int end = PAGE_NUM * i;
+		int start = PAGE_NUM * i;
+		int end = PAGE_NUM * (i+1);
 		String sql = "SELECT uuid,ORIGIN from data where filename = '" + f + "' LIMIT " + String.valueOf(start) + ","
 				+ String.valueOf(end);
 		jdbcUtil jdbcUtil = new jdbcUtil();
 		Statement stmt = null;
 		List<String> res = null;
-		Connection mysqlConn = jdbcUtil.getConnection(); // 获取数据库链接
+		Connection mysqlConn = null;
 		try {
+			mysqlConn = jdbcUtil.getConnection(); // 获取数据库链接
 			stmt = mysqlConn.createStatement();
 			ResultSet rs = stmt.executeQuery(sql);
 			res = new ArrayList<>();
@@ -182,14 +183,14 @@ public class DataBase_Dao {
 	public void test(){
 //		List<AfterDataInstance> datares = getDao();
 //		System.out.println(datares.size());
-//		List<String> res = getDataFormByIndex("rna.gbk", 1) ;
-//		for(int i=0;i<res.size();i++){
-//				System.out.println(res.get(i));
-//		}
-		String uuid = "3d26cae1-be24-4f89-a21d-e1707a8ad691";
-		AfterDataInstance af = getContentById(uuid);
-		System.err.println(af.toString());
-		
+		List<String> res = getDataFormByIndex("rna.gbk", 1) ;
+		for(int i=0;i<res.size();i++){
+				System.out.println(res.get(i));
+		}
+//		String uuid = "3d26cae1-be24-4f89-a21d-e1707a8ad691";
+//		AfterDataInstance af = getContentById(uuid);
+//		System.err.println(af.toString());
+//		
 		
 	}
 	

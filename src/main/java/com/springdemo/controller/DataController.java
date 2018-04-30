@@ -4,14 +4,18 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.springdemo.dao.DataBase_Dao;
 import com.springdemo.dao.DataFormImpl;
 import com.springdemo.dao.FileFormImpl;
 import com.springdemo.domain.AfterDataInstance;
-
+@Controller
 public class DataController {
 	static final String FILE_ROOT = "C://Users/lijunyi/git/datadel/file";
 	/**
@@ -21,12 +25,13 @@ public class DataController {
 	 */
 	@RequestMapping(value="/getFileForm")
 	@ResponseBody
-	public List<String> getFileForm(int index) {
+	public List<String> getFileForm(int index, HttpServletRequest req) {
+		ModelAndView mav = new ModelAndView();
 		File file = new File(FILE_ROOT);
 		String[] fileName = file.list();
 		List<String> list = Arrays.asList(fileName);
 		FileFormImpl ff = new FileFormImpl();
-		List<String> res = ff.getFormByIndex(list,index);
+		List<String> res = ff.getFormByIndex(list, index);
 		return res;
 	}
 	
@@ -47,7 +52,8 @@ public class DataController {
 		}
 		DataBase_Dao dao = new DataBase_Dao();
 		AfterDataInstance adi= dao.getContentById(uuid);
-		List<String> map = simgledealdata(adi);
+		System.out.println(adi.getOrigin().length());
+//		List<String> map = simgledealdata(adi);
 //		de.savedataInstance(res);
 		return "";
 	}
