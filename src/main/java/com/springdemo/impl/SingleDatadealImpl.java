@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,7 +19,7 @@ import com.springdemo.dao.DataBase_Dao;
 import com.springdemo.dao.SingleDatadeal;
 
 public class SingleDatadealImpl implements SingleDatadeal {
-
+	static final String[] ATCG = {"a","t","c","g"};
 	@Override
 	public void dealData() {
 		DataBase_Dao a = new DataBase_Dao();
@@ -194,11 +195,50 @@ public class SingleDatadealImpl implements SingleDatadeal {
 	}
 
 	@Override
-	public Map<String, String> dealSingledata(String data) {
+	public Map<String, Object> dealSingledata(String data) {
 		String cl = new String(data);
-		return null;
+		float lengthbefore = data.length();
+		List<String> res = splitContent(cl);
+		Map<String, Object> result = new HashMap<>();
+		float lengthAfter = 0;
+		List<Object> floatArrList = new ArrayList<>();
+		for (int i = 0; i < res.size(); i++) {
+			lengthAfter = lengthAfter + res.get(i).length();
+			floatArrList.add(getPercentArrByres(data));
+		}
+		result.put("lenPercent", lengthAfter / lengthbefore);
+		result.put("contentList", res);
+		result.put("floatArrList", floatArrList);
+		return result;
 	}
 
+	private float[] getPercentArrByres(String data) {
+		int len = data.length();
+		if (len == 0) {
+			return null;
+		}
+		float[] res = new float[4];
+		for (int i = 0; i < res.length; i++) {
+			res[i] = getPercent(data, ATCG[i]);
+		}
+		return res;
+
+	}
+
+	private float getPercent(String data, String index) {
+		float len = data.length();
+		if (len == 0) {
+			return 0;
+		}
+		float reslen = len - data.replaceAll(index, "").length();
+		float a = reslen / len;
+		return a;
+	}
+	/**
+	 * 将origin中的有效的字符串拆分出来
+	 * @param origin
+	 * @return
+	 */
 	@Override
 	public List<String> splitContent(String origin) {
 		System.out.println("拆分开始");
@@ -219,10 +259,15 @@ public class SingleDatadealImpl implements SingleDatadeal {
 	public List<Map<String, String>> dealSingledatas(List<String> data) {
 		List<Map<String, String>> res = new ArrayList<>();
 		for (int i = 0; i < data.size(); i++) {
-			Map<String, String> r = dealSingledata(data.get(i));
-			res.add(r);
+//			Map<String, String> r = dealSingledata(data.get(i));
+//			res.add(r);
 		}
 		return res;
 	}
-
+	@Test
+	public void test(){
+		String data= "aaaattttcccgggg";
+		float a[] = getPercentArrByres(data);
+		System.out.println();
+	}
 }

@@ -26,15 +26,16 @@ function showListByfilename(){
 	});
     
 }
-function showResult(){
+function showResult() {
 	$.ajax({
 		type : "POST",
 		data : {
-			uuid :"3d26cae1-be24-4f89-a21d-e1707a8ad691"
+			uuid : "3d26cae1-be24-4f89-a21d-e1707a8ad691"
 		},
 		url : "http://localhost:8080/datadel/simgledealdata",
 		success : function(data) {
-			initDataForm(data);
+			floatarr = data.floatArrList;
+			initEcharts(data);
 		}
 	});
 }

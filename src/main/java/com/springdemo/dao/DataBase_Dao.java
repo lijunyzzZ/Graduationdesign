@@ -152,7 +152,6 @@ public class DataBase_Dao {
 				res.add(uuid);
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return res;

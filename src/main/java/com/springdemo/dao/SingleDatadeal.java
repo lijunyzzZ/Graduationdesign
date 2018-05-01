@@ -26,7 +26,7 @@ public interface SingleDatadeal {
 
 	public List<String> getDataRes(String[] s);
 	
-	public Map<String,String> dealSingledata(String data);
+	public Map<String,Object> dealSingledata(String data);
 	
 	public List<String> splitContent(String origin);
 	
